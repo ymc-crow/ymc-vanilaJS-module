@@ -14,11 +14,11 @@ const createDB = () => {
     const request = window.indexedDB.open(DB_NAME);
     
     request.onerror = function(event) {
-      resolve(null);
+      resolve(null); 
     };
     request.onsuccess = function(event) {
       db = event.target.result;
-      resolve(db)
+      resolve(db);
     };
     request.onupgradeneeded = function(event) {
       db = event.target.result;
@@ -26,21 +26,21 @@ const createDB = () => {
         db.deleteObjectStore(STORE_NAME);
       }
       db.createObjectStore(STORE_NAME, { keyPath: 'keyVal' });
+      const transaction = event.target.transaction;
+      transaction.oncomplete = event => {
+        resolve(db);
+      }
     };
   });
 };
 
 const getStore = () => {
   const dbPromise = createDB();
-  return new Promise((resolve) => {
-    dbPromise.then(db => {
-      resolve(db.transaction(STORE_NAME, 'readwrite').objectStore(STORE_NAME));
-    });
-  });
+  return dbPromise.then(db => db.transaction(STORE_NAME, 'readwrite').objectStore(STORE_NAME));
 };
 
 export const addResultCache = async data => {
-  const store = await getStore()
+  const store = await getStore();
   store?.put(data);
 };
 

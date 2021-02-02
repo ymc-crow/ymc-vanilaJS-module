@@ -1,5 +1,5 @@
 import ajaxController from './ajaxController.js';
-console.log(ajaxController);
+
 const test = async () => {
   const reqParam = {
     url: '/src/assets/movieList.json',
