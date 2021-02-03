@@ -1,5 +1,5 @@
-const DB_NAME = 'MyTestDatabase';
-const STORE_NAME = 'ajaxHistory'; 
+const DB_NAME = 'YMC_IDB';
+const STORE_NAME = 'AJAX_HISTORY'; 
 
 
 let db;
