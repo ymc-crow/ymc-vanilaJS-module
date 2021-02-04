@@ -1,19 +1,25 @@
+import { render } from './utils/index.js'
+
 export default class renderer {
-    #wrapper;
-    #content;
-    #props;
     constructor({ wrapper, props }={} ) {
-        this.#wrapper = wrapper;
-        this.#props = props;
-        this.#content = this.template();
+        this.wrapper = wrapper;
+        this.props = props;
     }
+
     template() {
-        throw new Error(`template method must be implemeted in "${this.constuctor.name}" Class use this.#prop(${this.#props}) when draw`);
+        throw new Error(`template method must be implemeted in "${this.__proto__.constuctor.name}" Class use this.prop(${this.props}) when draw`);
     }
-    render() {
-        const wrapper = this.#wrapper;
-        const { insertAdjacentHTML } = wrapper;
-        insertAdjacentHTML('beforeend', this.#content);
-        return this.dom = wrapper.lastChild;
+
+    renderChildren() {
+        return null;
+    }
+
+    async #renderMe() {
+        this.dom = render(this.wrapper, await this.template());
+    }
+
+    async render() {
+        await this.#renderMe();
+        await this.renderChildren();
     }
 };

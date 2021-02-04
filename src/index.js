@@ -1,11 +1,8 @@
-import { ajaxController } from './utils/index.js';
+import list from './list.js';
 
-const test = async () => {
-  const reqParam = {
-    url: '/assets/movieList.json',
-  };
-  const testObj = new ajaxController(reqParam);
-  const result = await testObj.call();
-  console.log(result);
+const start = async () => {
+  await new list({
+    wrapper: document.querySelector('#root')
+  }).render();
 };
-test();
+start();
