@@ -1,5 +1,6 @@
 import { addResultCache, getResultCache } from './idbController.js';
-import createAjaxCacheKey from './createAjaxCacheKey.js'
+import createAjaxCacheKey from './createAjaxCacheKey.js';
+import getCurrentTime from './getCurrentTime.js';
 
 const RESULT_CACHE_PERIODE = 5000 // 5초
 
@@ -37,7 +38,7 @@ export default class ajaxController {
       const stringifyData = JSON.stringify(data);
       const reqUrl = createUrl(props);
       const ajaxCacheKey = createAjaxCacheKey({url,stringifyData});
-      const currentTime = new Date().getTime();
+      const currentTime = getCurrentTime();
       const cachedResult = await getResultCache(ajaxCacheKey);
       if (cachedResult && (currentTime - cachedResult?.timeStamp < RESULT_CACHE_PERIODE)) return cachedResult?.result;
       const bodyReq = method === 'POST' ? { body: stringifyData} : {};
@@ -55,7 +56,7 @@ export default class ajaxController {
             {
               keyVal: ajaxCacheKey,
               result,
-              timeStamp:new Date().getTime(),
+              timeStamp: getCurrentTime(),
             }
           );
           return result;
