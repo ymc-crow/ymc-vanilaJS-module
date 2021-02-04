@@ -1,4 +1,5 @@
 import { addResultCache, getResultCache } from './idbController.js';
+import createAjaxCacheKey from './createAjaxCacheKey.js'
 
 const RESULT_CACHE_PERIODE = 5000 // 5초
 
@@ -35,7 +36,7 @@ export default class ajaxController {
       const { url, method='GET', data } = props;
       const stringifyData = JSON.stringify(data);
       const reqUrl = createUrl(props);
-      const ajaxCacheKey = `${url}&${stringifyData}`;
+      const ajaxCacheKey = createAjaxCacheKey({url,stringifyData});
       const currentTime = new Date().getTime();
       const cachedResult = await getResultCache(ajaxCacheKey);
       if (cachedResult && (currentTime - cachedResult?.timeStamp < RESULT_CACHE_PERIODE)) return cachedResult?.result;

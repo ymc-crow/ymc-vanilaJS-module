@@ -1,8 +1,8 @@
-import ajaxController from './ajaxController.js';
+import { ajaxController } from './utils/index.js';
 
 const test = async () => {
   const reqParam = {
-    url: '/src/assets/movieList.json',
+    url: '/assets/movieList.json',
   };
   const testObj = new ajaxController(reqParam);
   const result = await testObj.call();
