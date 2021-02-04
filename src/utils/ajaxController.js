@@ -1,8 +1,13 @@
-import { addResultCache, getResultCache } from './idbController.js';
+import idbController from './idbController.js';
 import createAjaxCacheKey from './createAjaxCacheKey.js';
 import getCurrentTime from './getCurrentTime.js';
 
+const DB_NAME = 'YMC_IDB';
+const STORE_NAME = 'AJAX_HISTORY'; 
+
 const RESULT_CACHE_PERIODE = 5000 // 5초
+
+const ajaxIdb = new idbController({ dbName: DB_NAME, storeName: STORE_NAME });
 
 const createUrl = ({ url, method='GET', data }) => {
   if (!data || Object.entries(data).length < 1 || method !== 'GET') return url;
@@ -28,18 +33,22 @@ const getParsedResponse = async response => {
 }
 
 export default class ajaxController {
+  #abortController;
+  #props;
   constructor(props) {
-    this.props = props;
-    this.abortController = new AbortController();
+    this.#props = props;
+    this.#abortController = new AbortController();
   }
+
   async call() {
-      const { abortController, props } = this;
+      const abortController = this.#abortController;
+      const props = this.#props;
       const { url, method='GET', data } = props;
       const stringifyData = JSON.stringify(data);
       const reqUrl = createUrl(props);
       const ajaxCacheKey = createAjaxCacheKey({url,stringifyData});
       const currentTime = getCurrentTime();
-      const cachedResult = await getResultCache(ajaxCacheKey);
+      const cachedResult = await ajaxIdb.getResultCache(ajaxCacheKey);
       if (cachedResult && (currentTime - cachedResult?.timeStamp < RESULT_CACHE_PERIODE)) return cachedResult?.result;
       const bodyReq = method === 'POST' ? { body: stringifyData} : {};
       try {
@@ -52,9 +61,9 @@ export default class ajaxController {
               ...bodyReq
           });
           const result = await getParsedResponse(response);
-          addResultCache(
+          ajaxIdb.addResultCache(
             {
-              keyVal: ajaxCacheKey,
+              key: ajaxCacheKey,
               result,
               timeStamp: getCurrentTime(),
             }
@@ -64,8 +73,9 @@ export default class ajaxController {
           return e;
       }
   }
+
   abort() {
-    this.abortController.abort();
+    this.#abortController.abort();
   }
 };
 

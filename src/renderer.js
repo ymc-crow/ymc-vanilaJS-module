@@ -16,4 +16,4 @@ export default class renderer {
         insertAdjacentHTML('beforeend', this.#content);
         return this.dom = wrapper.lastChild;
     }
-}
+};
