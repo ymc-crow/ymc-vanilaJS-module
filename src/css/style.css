@@ -1,12 +1,8 @@
-.ul {
+ul {
   width: 1000px;
 }
-.item {
+li {
   display: inline-block;
-  width: 245px;
-  height: 245px;
-}
-img {
   width: 245px;
   height: 245px;
 }

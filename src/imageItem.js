@@ -6,9 +6,9 @@ export default class imageItem extends renderer{
   }
   template() {
     return `
-    <div class="item">
+    <li>
       <img src="${this.props.item.download_url}" />
-    </div>
+    </li>
     `;
   }
 };
