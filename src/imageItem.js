@@ -5,6 +5,10 @@ export default class imageItem extends renderer{
     super(arg);
   }
   template() {
-    return `<li>${this.props.index}</li>`;
+    return `
+    <div class="item">
+      <img src="${this.props.item.download_url}" />
+    </div>
+    `;
   }
 };

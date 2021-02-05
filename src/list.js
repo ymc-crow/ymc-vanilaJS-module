@@ -2,8 +2,14 @@ import renderer from './renderer.js';
 import imageItem from './imageItem.js';
 import { getData } from './utils/index.js'
 
-const dataURL = '/assets/movieList.json';
-const reqParam = { url: dataURL };
+const dataURL = 'https://picsum.photos/v2/list';
+const reqParam = {
+  url: dataURL,
+  data:{
+    page: 1,
+    limit:100
+  }
+};
 
 export default class list extends renderer{
   constructor(arg) {
@@ -11,11 +17,10 @@ export default class list extends renderer{
   }
   async renderChildren() {
     const data = await getData(reqParam);
-    console.log(data);
-    for (const [index, item] of data.movies.entries()) {
+    for (const [index, item] of data.entries()) {
       await new imageItem({
         wrapper: this.dom,
-        props: {index}
+        props: {index, item}
       }).render();
     }
   }

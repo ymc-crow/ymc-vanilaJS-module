@@ -15,7 +15,11 @@ export default class renderer {
     }
 
     waiting() {
-        return '<div>기다리는 중입니다</div>';
+        return '';
+    }
+
+    afterRender() {
+
     }
 
     async #update() {
@@ -32,11 +36,12 @@ export default class renderer {
         if (this.dom) return await this.#update();
         this.waitingDom = render(this.wrapper, this.waiting());
         this.dom = render(this.wrapper, await this.template());
-        this.waitingDom.remove();
+        this?.waitingDom?.remove();
     }
 
     async render() {
         await this.#renderMe();
         await this.renderChildren();
+        this.afterRender();
     }
 };
