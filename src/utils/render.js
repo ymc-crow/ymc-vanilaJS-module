@@ -1,5 +1,5 @@
-const render = (wrapper, content) => {
-  wrapper.insertAdjacentHTML('beforeend', content);
+const render = (wrapper, content, pos) => {
+  wrapper.insertAdjacentHTML( pos ?? 'beforeend', content);
   return wrapper.lastChild;
 };
 

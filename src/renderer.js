@@ -14,8 +14,25 @@ export default class renderer {
         return null;
     }
 
+    waiting() {
+        return '<div>기다리는 중입니다</div>';
+    }
+
+    async #update() {
+        this.dom.insertAdjacentHTML('afterend', this.waiting());
+        this.waitingDom = this.dom.nextSibling;
+        this.dom.remove();
+        const template = await this.template();
+        this.waitingDom.insertAdjacentHTML('afterend', template);
+        this.dom = this.waitingDom.nextSibling;
+        this.waitingDom.remove();
+    }
+
     async #renderMe() {
+        if (this.dom) return await this.#update();
+        this.waitingDom = render(this.wrapper, this.waiting());
         this.dom = render(this.wrapper, await this.template());
+        this.waitingDom.remove();
     }
 
     async render() {
