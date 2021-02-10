@@ -7,7 +7,7 @@ export default class imageItem extends renderer{
   template() {
     return `
     <li>
-      <img src="${this.props.item.download_url}" />
+      <img src="${'http://placehold.it/120x120&text=ready'}" data-src="${this.props.item.download_url}" />
     </li>
     `;
   }

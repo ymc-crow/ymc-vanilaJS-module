@@ -1,8 +1,6 @@
 // IntersectionObserver의 options를 설정합니다.
 const options = {
   root: null,
-  // 타겟 이미지 접근 전 이미지를 불러오기 위해 rootMargin을 설정했습니다.
-  rootMargin: '0px 0px 30px 0px',
   threshold: 0
 }
 
@@ -24,3 +22,5 @@ const images = document.querySelectorAll('.image');
 images.forEach((el) => {
   io.observe(el);
 })
+
+export default io;

@@ -8,5 +8,6 @@ test image(by url info) : http://placehold.it/120x120&text=image1, https://picsu
 * [x] idbController(asynchronous handle)
 * [x] renderer (basic class for ui renderer class)
 * [x] imageList
+* [x] image lazyload using intersection observer
 
 

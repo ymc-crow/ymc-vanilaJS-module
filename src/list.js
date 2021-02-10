@@ -1,6 +1,6 @@
 import renderer from './renderer.js';
 import imageItem from './imageItem.js';
-import { getData } from './utils/index.js'
+import { getData, lazyLoadImageIo } from './utils/index.js'
 
 const dataURL = 'https://picsum.photos/v2/list';
 const reqParam = {
@@ -23,6 +23,12 @@ export default class list extends renderer{
         props: {index, item}
       }).render();
     }
+  }
+  afterRender() {
+    const images = document.querySelectorAll('img');
+    images.forEach((el) => {
+      lazyLoadImageIo.observe(el);
+    });
   }
   template() {
     return `<ul></ul>`;
