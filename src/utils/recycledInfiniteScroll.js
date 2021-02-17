@@ -16,12 +16,6 @@ const io = new IntersectionObserver((entries, observer) => {
       // observer.unobserve(entry.target);
     }
   })
-}, options)
-
-// 관찰할 대상을 선언하고, 해당 속성을 관찰시킨다.
-const list = document.querySelectorAll('li');
-list.forEach((el) => {
-  io.observe(el);
-})
+}, options);
 
 export default io;
