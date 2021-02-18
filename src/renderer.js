@@ -15,7 +15,7 @@ export default class renderer {
     }
 
     waiting() {
-        return '';
+        return '<div></div>';
     }
 
     afterRender() {
@@ -23,23 +23,27 @@ export default class renderer {
     }
 
     async #update() {
-        this.dom.insertAdjacentHTML('afterend', this.waiting());
-        this.waitingDom = this.dom.nextSibling;
+        const waitingDom = this.waiting();
+        this.dom.insertAdjacentHTML('afterend', waitingDom);
+        this.waitingDom = this.dom.nextElementSibling;
         this.dom.remove();
-        const template = await this.template();
-        this.waitingDom.insertAdjacentHTML('afterend', template);
-        this.dom = this.waitingDom.nextSibling;
+        this.waitingDom.insertAdjacentHTML('afterend', await this.template());
+        this.dom = this.waitingDom.nextElementSibling;
         this.waitingDom.remove();
     }
 
     async #renderMe() {
         if (this.dom) return await this.#update();
-        this.waitingDom = render(this.wrapper, this.waiting());
+        const waitingDom = this.waiting();
+        if (waitingDom) {
+            this.waitingDom = render(this.wrapper, this.waiting());
+        }
         this.dom = render(this.wrapper, await this.template());
         this?.waitingDom?.remove();
     }
 
-    async render() {
+    async render(props) {
+        if (props) this.props = {...this.props, ...props };
         await this.#renderMe();
         await this.renderChildren();
         this.afterRender();
